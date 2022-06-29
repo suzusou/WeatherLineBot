@@ -1,0 +1,37 @@
+これは自分のymlファイルに記述
+# ワークフロー名
+name: test_chatbot
+
+
+# 日本時刻から9時間マイナスで設定
+　この場合、朝７時に実行される
+on:
+  schedule:
+    - cron: '0 22 * * *'
+
+jobs:
+  build:
+    # Ubuntuの最新版環境内で処理を実行することを指定
+    runs-on: ubuntu-latest
+
+    # 実行する処理＆コマンド指定
+    steps:
+      # リポジトリからチェックアウトして以下の処理を実行していく
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          # pip更新
+          python -m pip install --upgrade pip
+          # 必要なパッケージインストール
+          pip install line-bot-sdk
+          pip install beautifulsoup4
+          pip install requests
+      - name: Run script
+        run: |
+          # weather.pyの実行
+          python weather.py
+
